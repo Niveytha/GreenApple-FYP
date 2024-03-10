@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "826757399537",
+    "firebase_url": "https://greenappletm-4bf0a-default-rtdb.firebaseio.com",
+    "project_id": "greenappletm-4bf0a",
+    "storage_bucket": "greenappletm-4bf0a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:826757399537:android:2038c776426fbb32423a50",
+        "android_client_info": {
+          "package_name": "com.app.treo.green.apple"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "826757399537-o3ir1k1679eiv3j6vmo0khlo9md41eu2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBufVwzhsLVjenRCaYSjnlWS9O1DFHqje8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "826757399537-o3ir1k1679eiv3j6vmo0khlo9md41eu2.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

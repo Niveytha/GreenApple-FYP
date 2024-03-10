@@ -1,0 +1,5 @@
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <corners android:radius="50dp" /> <!-- Adjust the radius as needed to achieve the desired roundness -->
+    <solid android:color="#FF0000" /> <!-- Red color for the pressed state -->
+</shape>

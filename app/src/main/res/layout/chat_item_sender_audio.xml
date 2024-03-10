@@ -1,0 +1,78 @@
+<!-- Layout for sender's audio message -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="8dp"
+    android:orientation="horizontal">
+
+    <!--    relative layout to left side-->
+    <RelativeLayout
+        android:id="@+id/audio_receiver_layout"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:padding="8dp"
+        android:background="@drawable/bg_other">
+
+        <ImageView
+            android:id="@+id/play_audio_sender"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="30dp"
+            android:src="@drawable/ic_audio_receiver" />
+
+        <TextView
+            android:id="@+id/timestamp_receiver"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:textColor="@color/white"
+            android:layout_toEndOf="@id/play_audio_sender"
+            android:layout_centerVertical="true"
+            android:textSize="12sp" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/audio_sender_layout"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:padding="8dp"
+        android:background="@drawable/bg_sender"
+        >
+
+        <!-- time stamp -->
+        <ImageView
+            android:id="@+id/audio_icon_sender"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="10dp"
+            android:layout_toStartOf="@+id/tick_sender"
+            android:src="@drawable/ic_audio_sender"
+            />
+
+        <TextView
+            android:id="@+id/timestamp_sender"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="50dp"
+            android:layout_alignParentEnd="true"
+            android:textSize="12sp" />
+
+        <!--    tick mark to show message is sent-->
+        <ImageView
+            android:id="@+id/tick_sender"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="20dp"
+            android:layout_toStartOf="@id/timestamp_sender"
+            android:src="@drawable/ic_tick"
+            android:layout_centerVertical="true" />
+    </RelativeLayout>
+
+
+</LinearLayout>
