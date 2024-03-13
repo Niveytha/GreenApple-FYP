@@ -50,6 +50,7 @@ public class MessageViewHolder extends RecyclerView.ViewHolder {
             //play audio
             try {
                 MediaPlayer mediaPlayer = new MediaPlayer();
+
                 mediaPlayer.setDataSource(message.getAudioUrl());
                 mediaPlayer.prepare();
                 mediaPlayer.start();

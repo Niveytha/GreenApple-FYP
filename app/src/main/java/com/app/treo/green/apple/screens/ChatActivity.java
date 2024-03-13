@@ -8,16 +8,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.animation.ObjectAnimator;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
-import android.media.Image;
 import android.media.MediaPlayer;
 import android.media.MediaRecorder;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
@@ -28,8 +24,14 @@ import android.widget.Toast;
 import com.app.treo.green.apple.R;
 import com.app.treo.green.apple.adapter.MessageAdapter;
 import com.app.treo.green.apple.model.Message;
-import com.firebase.ui.database.FirebaseRecyclerOptions;
+import com.app.treo.green.apple.model.User;
+import com.app.treo.green.apple.utils.FirebaseUtil;
+import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.material.snackbar.Snackbar;
+import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -37,6 +39,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ServerValue;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -47,6 +52,10 @@ import org.json.JSONObject;
 import java.io.File;
 import java.io.IOException;
 import java.time.Instant;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -62,7 +71,7 @@ import okhttp3.Response;
 
 
 public class ChatActivity extends AppCompatActivity {
-    private ImageView imageView;
+    private ImageView imageView,sendButton,cancelButton;
     private TextView username;
 
     private FirebaseAuth mAuth;
@@ -71,13 +80,17 @@ public class ChatActivity extends AppCompatActivity {
     private MediaRecorder recorder = null;
     private MediaPlayer player = null;
     private boolean isRecording = false;
-    private String otherUserId, otherUserRoom;
-    private String currentUserId, currentUserRoom;
+    private String otherUserId;
+    private String currentUserId;
 
     private RecyclerView recyclerView;
     private MessageAdapter adapter;
+    private Message model;
 
-    private DatabaseReference referenceCurrentUser, referenceOtherUser;
+    private boolean voiceBeingRecorded = false;
+
+
+    String chatRoomId, otherUserToken;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,8 +107,10 @@ public class ChatActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         currentUserId = mAuth.getCurrentUser().getUid();
 
-        otherUserRoom = currentUserId + "_" + otherUserId;
-        currentUserRoom = otherUserId + "_" + currentUserId;
+        chatRoomId = FirebaseUtil.getChatroomId(currentUserId, otherUserId);
+
+
+        getOtherUserToken();
 
 
         username.setText(name);
@@ -106,24 +121,12 @@ public class ChatActivity extends AppCompatActivity {
 
         recordButton = findViewById(R.id.btn_record);
 
-        recordButton.setOnTouchListener((v, event) -> {
-            switch (event.getAction()) {
-                case MotionEvent.ACTION_DOWN:
-                    //show snackbar at top
-                    topSnackBar(v);
-                    recordButton.setBackgroundResource(R.drawable.record_button_square_pressed);
-                    animateButtonColor(recordButton);
-                    startRecording();
-                    return true;
-                case MotionEvent.ACTION_UP:
-                    recordButton.setBackgroundResource(R.drawable.record_button_rounded_normal);
-                    return true;
-            }
-            return false;
-        });
+        sendButton = findViewById(R.id.send_button);
+        cancelButton = findViewById(R.id.cancel_button);
+        recyclerView = findViewById(R.id.chat_recycler);
 
-        ImageView sendButton = findViewById(R.id.send_button);
-        ImageView cancelButton = findViewById(R.id.cancel_button);
+        sendButton.setVisibility(View.GONE);
+        cancelButton.setVisibility(View.GONE);
 
         sendButton.setOnClickListener(v -> {
             Toast.makeText(ChatActivity.this, "Sending Message!", Toast.LENGTH_SHORT).show();
@@ -138,33 +141,42 @@ public class ChatActivity extends AppCompatActivity {
             if (file.exists()) {
                 file.delete();
             }
+            recordButton.setVisibility(View.VISIBLE);
+            sendButton.setVisibility(View.GONE);
+            cancelButton.setVisibility(View.GONE);
+        });
+
+        recordButton.setOnClickListener(action -> {
+            if (!voiceBeingRecorded) {
+                topSnackBar();
+                recordButton.setBackgroundResource(R.drawable.record_button_square_pressed);
+                animateButtonColor(recordButton);
+                startRecording();
+                voiceBeingRecorded = true;
+            } else {
+                stopRecording();
+                sendButton.setVisibility(View.VISIBLE);
+                cancelButton.setVisibility(View.VISIBLE);
+                recordButton.setBackgroundResource(R.drawable.record_button_rounded_normal);
+                voiceBeingRecorded = false;
+                recordButton.setVisibility(View.GONE);
+            }
+
         });
 
 
-        recyclerView = findViewById(R.id.chat_recycler);
-        adapter = new MessageAdapter(this);
-        recyclerView.setAdapter(adapter);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
-        layoutManager.setReverseLayout(true);
-        recyclerView.setLayoutManager(layoutManager);
+        getOrCreateChatroomModel();
+        setupChatRecyclerView();
 
 
-        referenceCurrentUser = FirebaseDatabase.getInstance().getReference("conversations")
-                .child(currentUserRoom);
+    }
 
-        referenceOtherUser = FirebaseDatabase.getInstance().getReference("conversations")
-                .child(otherUserRoom);
-
-
-        referenceCurrentUser.addValueEventListener(new ValueEventListener() {
+    private void getOtherUserToken() {
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Users").child(otherUserId);
+        reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                adapter.clear();
-                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
-                    Message message = dataSnapshot.getValue(Message.class);
-                    adapter.addMessage(message);
-                }
-                recyclerView.smoothScrollToPosition(0);
+                otherUserToken = snapshot.child("token").getValue(String.class);
             }
 
             @Override
@@ -173,11 +185,33 @@ public class ChatActivity extends AppCompatActivity {
             }
         });
 
-
     }
 
-    private static void topSnackBar(View v) {
-        Snackbar snackbar = Snackbar.make(v, "Voice is being Recorded...", Snackbar.LENGTH_SHORT);
+    void setupChatRecyclerView() {
+        Query query = FirebaseUtil.getChatroomMessageReference(chatRoomId)
+                .orderBy("timestamp", Query.Direction.DESCENDING);
+
+        FirestoreRecyclerOptions<Message> options = new FirestoreRecyclerOptions.Builder<Message>()
+                .setQuery(query, Message.class).build();
+
+        adapter = new MessageAdapter(options, getApplicationContext());
+        LinearLayoutManager manager = new LinearLayoutManager(this);
+        manager.setReverseLayout(true);
+        recyclerView.setLayoutManager(manager);
+        recyclerView.setAdapter(adapter);
+        adapter.startListening();
+        adapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
+            @Override
+            public void onItemRangeInserted(int positionStart, int itemCount) {
+                super.onItemRangeInserted(positionStart, itemCount);
+                recyclerView.smoothScrollToPosition(0);
+            }
+        });
+    }
+
+    private void topSnackBar() {
+        Snackbar snackbar = Snackbar.make(findViewById(R.id.chat_layout),
+                "Voice is being Recorded!", Snackbar.LENGTH_SHORT);
         View snackbarView = snackbar.getView();
         FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) snackbarView.getLayoutParams();
         params.gravity = Gravity.TOP;
@@ -196,16 +230,19 @@ public class ChatActivity extends AppCompatActivity {
         StorageReference audioRef = storageRef.child("audio/" + fileName);
         // Upload the audio file to Firebase Storage
         UploadTask uploadTask = audioRef.putFile(Uri.fromFile(file));
-        Toast.makeText(ChatActivity.this, "Sending Message!", Toast.LENGTH_SHORT).show();
+        Toast.makeText(ChatActivity.this, "Uploading Voice!", Toast.LENGTH_LONG).show();
         uploadTask.addOnFailureListener(e -> {
             // Handle unsuccessful uploads
+            Toast.makeText(this, "Failed to upload audio", Toast.LENGTH_SHORT).show();
+            recordButton.setVisibility(View.VISIBLE);
+            sendButton.setVisibility(View.GONE);
+            cancelButton.setVisibility(View.GONE);
         }).addOnSuccessListener(taskSnapshot -> {
             audioRef.getDownloadUrl().addOnSuccessListener(uri -> {
                 // Get the download URL for the uploaded audio file
                 String audioDownloadUrl = uri.toString();
                 // Store the audio message in the Realtime Database
                 sendMessage(audioDownloadUrl);
-                sendNotification();
             });
         });
     }
@@ -219,8 +256,6 @@ public class ChatActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 String name = snapshot.child("username").getValue().toString();
-                String imageUrl = snapshot.child("imageUrl").getValue().toString();
-                String token = snapshot.child("token").getValue().toString();
 
                 try {
                     JSONObject jsonObject = new JSONObject();
@@ -230,7 +265,7 @@ public class ChatActivity extends AppCompatActivity {
                     notificationObject.put("body", "Sent you an audio message");
 
                     jsonObject.put("notification", notificationObject);
-                    jsonObject.put("to", token);
+                    jsonObject.put("to", otherUserToken);
 
                     callAPI(jsonObject);
 
@@ -267,7 +302,7 @@ public class ChatActivity extends AppCompatActivity {
 
                     @Override
                     public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
-                        Log.e("TAG", "onResponse: " + response.body().string());
+                        Log.i("TAG", "onResponse: " + response.body().string());
                     }
                 }
         );
@@ -280,16 +315,39 @@ public class ChatActivity extends AppCompatActivity {
         Message message = new Message(currentUserId, otherUserId, audioDownloadUrl,
                 timestamp.toString());
 
-        adapter.addMessage(message);
+        FirebaseUtil.getChatroomMessageReference(chatRoomId).add(message)
+                .addOnCompleteListener(
+                        task -> {
+                            if (task.isSuccessful()) {
+                                sendNotification();
+                                recordButton.setVisibility(View.VISIBLE);
+                                sendButton.setVisibility(View.GONE);
+                                cancelButton.setVisibility(View.GONE);
+                            }
+                        }
+                );
+    }
 
-        referenceCurrentUser
-                .child(messageId)
-                .setValue(message);
+    void getOrCreateChatroomModel() {
+        FirebaseUtil.getChatroomReference(chatRoomId).get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                model = task.getResult().toObject(Message.class);
+                if (model == null) {
+                    //first time chat
+                    ZonedDateTime timestamp = ZonedDateTime.now();
+                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMM d, yyyy hh:mm a"); // Use 'MMM d, yyyy hh:mm a' for date and time in 12-hour format
+                    String formattedTime = timestamp.withZoneSameInstant(ZoneId.systemDefault()).format(formatter);
 
-        referenceOtherUser
-                .child(messageId)
-                .setValue(message);
-
+                    model = new Message(
+                            currentUserId,
+                            otherUserId,
+                            "",
+                            formattedTime
+                    );
+                    FirebaseUtil.getChatroomReference(otherUserId).set(model);
+                }
+            }
+        });
     }
 
     public void playAudio(View view) {
@@ -325,6 +383,21 @@ public class ChatActivity extends AppCompatActivity {
             recorder.release();
             recorder = null;
             isRecording = false;
+        }
+        //check file size if its exceed 10Mb then delete it
+        File file = new File(fileName);
+        if (file.exists()) {
+            if (file.length() > 10000000) {
+                file.delete();
+                //show snackbar to user with proper message
+                Snackbar snackbar = Snackbar.make(findViewById(R.id.chat_layout),
+                        "Recording size should be less than 10Mb", Snackbar.LENGTH_SHORT);
+                snackbar.setDuration(5000);
+                //add action to dismiss
+                snackbar.setAction("Dismiss", v -> snackbar.dismiss());
+
+                snackbar.show();
+            }
         }
     }
 

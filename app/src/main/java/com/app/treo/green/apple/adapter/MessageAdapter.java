@@ -1,6 +1,7 @@
 package com.app.treo.green.apple.adapter;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +11,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.app.treo.green.apple.R;
 import com.app.treo.green.apple.model.Message;
+import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
+import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
@@ -17,24 +20,13 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-public class MessageAdapter extends RecyclerView.Adapter<MessageViewHolder> {
+public class MessageAdapter extends FirestoreRecyclerAdapter<Message, MessageViewHolder> {
 
     private Context context;
-    private List<Message> messageList;
 
-    public MessageAdapter(Context context) {
+    public MessageAdapter(@NonNull FirestoreRecyclerOptions<Message> options, Context context) {
+        super(options);
         this.context = context;
-        this.messageList = new ArrayList<>();
-    }
-
-    public void addMessage(Message message) {
-        messageList.add(0, message);
-        notifyItemInserted(0);
-    }
-
-    public void clear() {
-        messageList.clear();
-        notifyDataSetChanged();
     }
 
     @NonNull
@@ -45,17 +37,13 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageViewHolder> {
     }
 
     @Override
-    public void onBindViewHolder(@NonNull MessageViewHolder holder, int position) {
-        Message message = messageList.get(position);
-        if (message.getCurrentUser().equals(FirebaseAuth.getInstance().getUid())) {
-            holder.bindSenderData(message);
+    public void onBindViewHolder(@NonNull MessageViewHolder holder, int position, @NonNull Message model) {
+
+        if (model.getCurrentUser().equals(FirebaseAuth.getInstance().getUid())) {
+            holder.bindSenderData(model);
         } else {
-            holder.bindReceiverData(message);
+            holder.bindReceiverData(model);
         }
     }
 
-    @Override
-    public int getItemCount() {
-        return messageList.size();
-    }
 }
