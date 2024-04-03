@@ -19,6 +19,7 @@ import com.app.treo.green.apple.R;
 import com.app.treo.green.apple.adapter.ViewPagerAdapter;
 import com.app.treo.green.apple.fragments.Profile;
 import com.app.treo.green.apple.fragments.Users;
+import com.app.treo.green.apple.utils.ReplaceFont;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 import com.google.firebase.auth.FirebaseAuth;
@@ -70,8 +71,6 @@ public class MainActivity extends AppCompatActivity {
 
             requestPermissions(new String[]{Manifest.permission.POST_NOTIFICATIONS}, 99);
         }
-
-
     }
 
     @Override

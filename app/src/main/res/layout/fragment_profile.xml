@@ -4,48 +4,60 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:padding="24dp"
+    android:background="@color/others_background"
     tools:context=".fragments.Profile">
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
-        android:gravity="center"
-        android:text="Profile"
-        android:textSize="30sp"
-        android:textStyle="bold" />
+<!--    <TextView-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginBottom="10dp"-->
+<!--        android:gravity="center"-->
+<!--        android:text="Profile"-->
+<!--        android:textSize="30sp"-->
+<!--        android:textStyle="bold" />-->
 
     <ImageView
         android:id="@+id/profile_image"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
         android:layout_gravity="center"
         android:src="@drawable/baseline_person_24"
-        android:layout_marginBottom="10dp"/>
+        android:layout_marginTop="80dp"
+        android:layout_marginBottom="10dp" />
 
     <TextView
         android:id="@+id/profile_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:fontFamily="@font/alegreya_semibold"
         android:text="User Name"
-        android:textSize="20sp"
+        android:textSize="32sp"
         android:textStyle="bold"
-        android:gravity="center"/>
+        android:textColor="@color/main_accent"
+        android:gravity="center"
+        android:layout_marginBottom="10dp" />
 
     <TextView
         android:id="@+id/profile_email"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:fontFamily="@font/mulish_medium"
         android:text="User Email"
-        android:textSize="15sp"
-        android:gravity="center"/>
+        android:textSize="20sp"
+        android:textColor="@color/foundation_black"
+        android:gravity="center"
+        android:layout_marginBottom="24dp" />
 
     <Button
         android:id="@+id/logout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:text="Logout"/>
+        android:layout_height="56dp"
+        android:layout_marginBottom="10dp"
+        android:background="@drawable/rounded_button"
+        android:text="Logout"
+        android:textSize="24dp"
+        android:textColor="@color/foundation_white" />
 
 
 </LinearLayout>

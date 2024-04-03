@@ -5,21 +5,45 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@color/others_background"
     tools:context=".screens.MainActivity">
 
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/my_toolbar"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:background="?attr/colorPrimary"
-        android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
-        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
+        android:layout_height="wrap_content"
+        android:background="@color/others_background"
+        android:paddingTop="20dp"
+        android:paddingBottom="10dp">
 
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/my_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:layout_marginTop="8dp"
+            android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+            >
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/logo_toolbar" />
+
+            </RelativeLayout>
+
+        </androidx.appcompat.widget.Toolbar>
+    </LinearLayout>
 
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tab_layout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:background="@color/main_secondary" >
 
         <com.google.android.material.tabs.TabItem
             android:id="@+id/users_tab"
@@ -33,6 +57,44 @@
             android:layout_height="wrap_content"
             android:text="Profile" />
     </com.google.android.material.tabs.TabLayout>
+    
+<!--    <RelativeLayout-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:background="@color/others_background">-->
+<!--        -->
+<!--        <LinearLayout-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:orientation="horizontal"-->
+<!--            android:weightSum="3"-->
+<!--            android:background="@drawable/round_back_white10_100"-->
+<!--            android:layout_margin="16dp">-->
+<!--            -->
+<!--            <TextView-->
+<!--                android:id="@+id/users_tab"-->
+<!--                android:layout_width="0dp"-->
+<!--                android:layout_height="48dp"-->
+<!--                android:layout_weight="1"-->
+<!--                android:text="Users"-->
+<!--                android:textColor="@color/foundation_white"-->
+<!--                android:textSize="20dp"-->
+<!--                android:fontFamily="@font/mulish_bold"-->
+<!--                android:background="@drawable/round_back_white_100"-->
+<!--                android:gravity="center" />-->
+
+<!--            <TextView-->
+<!--                android:id="@+id/profile_tab"-->
+<!--                android:layout_width="0dp"-->
+<!--                android:layout_height="48dp"-->
+<!--                android:layout_weight="1"-->
+<!--                android:text="Profile"-->
+<!--                android:textColor="@color/main_primary"-->
+<!--                android:textSize="16dp"-->
+<!--                android:fontFamily="@font/mulish_semibold"-->
+<!--                android:gravity="center" />-->
+<!--        </LinearLayout>-->
+<!--    </RelativeLayout>-->
 
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/view_pager"

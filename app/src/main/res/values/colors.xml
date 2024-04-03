@@ -1,8 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+<!--    old colours-->
     <color name="black">#FF000000</color>
     <color name="bg">#686565</color>
     <color name="white">#FFFFFFFF</color>
     <color name="green">#48b484</color>
     <color name="background">#E8F2F4</color>
+
+<!--    nivi's updated colours-->
+    <color name="main_accent">#43AD6D</color>
+    <color name="main_primary">#023234</color>
+    <color name="main_secondary">#EDE4D1</color>
+    <color name="foundation_white">#FFFFFF</color>
+    <color name="foundation_grey">#BDBEBF</color>
+    <color name="foundation_black">#000000</color>
+    <color name="others_background">#FFFBF3</color>
+    <color name="others_red">#FF4444</color>
 </resources>

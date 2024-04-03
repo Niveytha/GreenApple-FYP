@@ -2,4 +2,8 @@
     <string name="app_name">Green Apple TM</string>
     <string name="default_web_client_id">826757399537-o3ir1k1679eiv3j6vmo0khlo9md41eu2.apps.googleusercontent.com</string>
     <string name="default_notification_channel_id">com.app.treo.green.apple</string>
+
+    <string name="forgot_password"><u>Forgot password?</u></string>
+    <string name="register">Don\'t have an account? <u>Sign Up</u></string>
+    <string name="login">Already have an account? <u>Login</u></string>
 </resources>

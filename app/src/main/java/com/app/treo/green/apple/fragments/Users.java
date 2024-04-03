@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -91,10 +92,18 @@ public class Users extends Fragment {
         LayoutInflater layoutInflater = (LayoutInflater) requireContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View popupView = layoutInflater.inflate(R.layout.add_user, null);
 
-        int width = LinearLayout.LayoutParams.MATCH_PARENT;
-        int height = LinearLayout.LayoutParams.WRAP_CONTENT;
-        boolean focusable = true; // lets taps outside the popup also dismiss it
-        final PopupWindow popupWindow = new PopupWindow(popupView, width, height, focusable);
+        // Get the screen width
+        DisplayMetrics displayMetrics = requireActivity().getResources().getDisplayMetrics();
+        int screenWidth = displayMetrics.widthPixels;
+
+        // Set a slightly smaller width for the popup window
+        int popupWidth = Math.round(screenWidth * 0.8f); // Adjust the multiplier as needed
+
+        // Set a smaller height based on content, adjust as needed
+        int popupHeight = LinearLayout.LayoutParams.WRAP_CONTENT;
+
+        boolean focusable = true;
+        final PopupWindow popupWindow = new PopupWindow(popupView, popupWidth, popupHeight, focusable);
 
         EditText email = popupView.findViewById(R.id.et_email);
         Button addBtn = popupView.findViewById(R.id.add_user_btn);

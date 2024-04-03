@@ -129,12 +129,12 @@ public class ChatActivity extends AppCompatActivity {
         cancelButton.setVisibility(View.GONE);
 
         sendButton.setOnClickListener(v -> {
-            Toast.makeText(ChatActivity.this, "Sending Message!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(ChatActivity.this, "Sending message!", Toast.LENGTH_SHORT).show();
             uploadAudio();
         });
 
         cancelButton.setOnClickListener(v -> {
-            Toast.makeText(ChatActivity.this, "Recording Cancelled!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(ChatActivity.this, "Recording cancelled!", Toast.LENGTH_SHORT).show();
             stopRecording();
             // Delete the recorded file
             File file = getRecordedFile();
@@ -211,7 +211,7 @@ public class ChatActivity extends AppCompatActivity {
 
     private void topSnackBar() {
         Snackbar snackbar = Snackbar.make(findViewById(R.id.chat_layout),
-                "Voice is being Recorded!", Snackbar.LENGTH_SHORT);
+                "Audio is being recorded!", Snackbar.LENGTH_SHORT);
         View snackbarView = snackbar.getView();
         FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) snackbarView.getLayoutParams();
         params.gravity = Gravity.TOP;
@@ -230,7 +230,7 @@ public class ChatActivity extends AppCompatActivity {
         StorageReference audioRef = storageRef.child("audio/" + fileName);
         // Upload the audio file to Firebase Storage
         UploadTask uploadTask = audioRef.putFile(Uri.fromFile(file));
-        Toast.makeText(ChatActivity.this, "Uploading Voice!", Toast.LENGTH_LONG).show();
+        Toast.makeText(ChatActivity.this, "Uploading audio!", Toast.LENGTH_LONG).show();
         uploadTask.addOnFailureListener(e -> {
             // Handle unsuccessful uploads
             Toast.makeText(this, "Failed to upload audio", Toast.LENGTH_SHORT).show();

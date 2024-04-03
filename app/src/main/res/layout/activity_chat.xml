@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/others_background"
     android:id="@+id/chat_layout"
     tools:context=".screens.ChatActivity">
 
@@ -11,35 +12,43 @@
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/chat_toolbar"
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:background="@color/green"
+        android:layout_height="88dp"
+        android:background="@color/main_primary"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-        >
-        <!--        add image-->
-        <ImageView
-            android:id="@+id/chat_image"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_alignParentStart="true"
-            android:layout_centerVertical="true"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="5dp"
-            android:layout_marginBottom="5dp"
-            android:src="@drawable/baseline_person_24" />
-        <!--        add name-->
-        <TextView
-            android:id="@+id/chat_name"
-            android:layout_width="wrap_content"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
+
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginStart="15dp"
-            android:layout_marginTop="5dp"
-            android:layout_marginBottom="5dp"
-            android:layout_toEndOf="@id/chat_image"
-            android:text="User Name"
-            android:textSize="20sp"
-            android:textStyle="bold" />
+            android:gravity="center" >
+
+            <!--        add image-->
+            <ImageView
+                android:id="@+id/chat_image"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                android:src="@drawable/baseline_person_24" />
+
+            <!--        add name-->
+            <TextView
+                android:id="@+id/chat_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                android:layout_toEndOf="@id/chat_image"
+                android:text="User Name"
+                android:textColor="@color/foundation_white"
+                android:textSize="40sp"
+                android:fontFamily="@font/alegreya_bold" />
+        </LinearLayout>
 
     </androidx.appcompat.widget.Toolbar>
 
@@ -66,21 +75,23 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:padding="5dp"
+        android:paddingStart="54dp"
+        android:paddingEnd="54dp"
         >
 
 <!--        add button to cancel at left mic buttona t centter and send at right-->
         <ImageView
             android:id="@+id/cancel_button"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
             android:layout_alignParentStart="true"
             android:layout_centerVertical="true"
             android:src="@drawable/baseline_cancel_24" />
 
         <ImageButton
             android:id="@+id/btn_record"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
             android:background="@drawable/record_button_rounded"
             android:contentDescription="Record"
             android:scaleType="fitCenter"
@@ -90,8 +101,8 @@
 
         <ImageView
             android:id="@+id/send_button"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
             android:src="@drawable/baseline_send_24" />

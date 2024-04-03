@@ -5,78 +5,105 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="10dp"
+    android:background="@color/others_background"
     android:id="@+id/login_layout"
     tools:context=".screens.Login">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:layout_marginHorizontal="20dp">
         <!--    Login Screen-->
         <ImageView
-            android:layout_width="200dp"
-            android:layout_height="200dp"
+            android:layout_width="240dp"
+            android:layout_height="240dp"
             android:layout_gravity="center"
-            android:layout_marginBottom="50dp"
-            android:src="@drawable/logo" />
+            android:layout_marginTop="40dp"
+            android:src="@drawable/logo_cropped" />
 
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="40dp"
+            android:gravity="center"
+            android:textSize="48sp"
+            android:textColor="@color/main_accent"
+            android:fontFamily="@font/alegreya_bold"
+            android:text="Welcome back!" />
+
+        <!--    email-->
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="72dp"
+            android:layout_marginBottom="16dp" >
 
             <EditText
                 android:id="@+id/et_email"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                android:hint="Email"
+                android:layout_height="match_parent"
+                android:background="@drawable/edit_text_border"
+                android:hint="Enter your email"
+                android:drawableStart="@drawable/baseline_email_24"
+                android:drawableTint="@color/foundation_grey"
+                android:drawablePadding="8dp"
                 android:inputType="textEmailAddress"
-                android:padding="10dp" />
+                android:textSize="24dp" />
+
         </com.google.android.material.textfield.TextInputLayout>
 
+        <!--    password-->
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/password_text_input_layout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="72dp"
+            android:layout_marginBottom="40dp"
             app:passwordToggleDrawable="@drawable/show_password_selector"
-            app:passwordToggleEnabled="true"
-            >
+            app:passwordToggleEnabled="true">
 
             <EditText
                 android:id="@+id/et_password"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginBottom="10dp"
-                android:hint="Password"
+                android:background="@drawable/edit_text_border"
+                android:hint="Enter your password"
+                android:drawableStart="@drawable/baseline_lock_24"
+                android:drawableTint="@color/foundation_grey"
+                android:drawablePadding="8dp"
                 android:inputType="textPassword"
-                android:padding="10dp" />
+                android:textSize="24dp" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
+        <!--       login button-->
         <Button
             android:id="@+id/btn_login"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
+            android:layout_height="64dp"
+            android:layout_marginBottom="16dp"
             android:background="@drawable/rounded_button"
-            android:padding="10dp"
             android:text="Login"
-            android:textColor="@color/white" />
+            android:textSize="24dp"
+            android:textColor="@color/foundation_white" />
 
-<!--        forgot password-->
+        <!--        forgot password-->
         <TextView
             android:id="@+id/tv_forgot_password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
+            android:layout_marginBottom="24dp"
             android:gravity="end"
-            android:text="Forgot Password?" />
+            android:text="@string/forgot_password"
+            android:textSize="20dp"
+            android:fontFamily="@font/mulish_medium_italic"
+            />
 
         <!--    Divider with written OR-->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
+            android:layout_marginBottom="16dp"
             android:gravity="center"
             android:orientation="horizontal">
 
@@ -105,15 +132,17 @@
             android:id="@+id/btn_login_google"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp" />
+            android:layout_marginBottom="24dp" />
 
+        <!--    sign up-->
         <TextView
             android:id="@+id/tv_register"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            android:gravity="end"
-            android:text="Don't have an account? Sign Up" />
+            android:gravity="center"
+            android:text="@string/register"
+            android:textSize="20dp"
+            android:fontFamily="@font/mulish_medium" />
 
     </LinearLayout>
 

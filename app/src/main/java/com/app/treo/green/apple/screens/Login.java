@@ -34,6 +34,8 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.database.FirebaseDatabase;
 
+import android.util.DisplayMetrics;
+
 public class Login extends AppCompatActivity {
     int RC_SIGN_IN = 20;
 
@@ -80,12 +82,18 @@ public class Login extends AppCompatActivity {
                     getSystemService(LAYOUT_INFLATER_SERVICE);
             View popupView = inflater.inflate(R.layout.forgot_password, null);
 
+            // Get screen width
+            DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
+            int screenWidth = displayMetrics.widthPixels;
 
-            // create the popup window
-            int width = LinearLayout.LayoutParams.MATCH_PARENT;
-            int height = LinearLayout.LayoutParams.WRAP_CONTENT;
+            // Set a slightly smaller width for the popup window
+            int popupWidth = Math.round(screenWidth * 0.8f); // Adjust multiplier as needed
+
+            // Set a smaller height based on content, adjust as needed
+            int popupHeight = LinearLayout.LayoutParams.WRAP_CONTENT;
+
             boolean focusable = true; // lets taps outside the popup also dismiss it
-            final PopupWindow popupWindow = new PopupWindow(popupView, width, height, focusable);
+            final PopupWindow popupWindow = new PopupWindow(popupView, popupWidth, popupHeight, focusable);
 
             EditText email = popupView.findViewById(R.id.et_email);
             Button resetBtn = popupView.findViewById(R.id.btn_forgot_password);
@@ -137,7 +145,7 @@ public class Login extends AppCompatActivity {
         }
 
 
-        Toast.makeText(Login.this, "Login in progress! Please wait!!!", Toast.LENGTH_SHORT).show();
+        Toast.makeText(Login.this, "Login in progress. Please wait!", Toast.LENGTH_SHORT).show();
 
         mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
@@ -145,7 +153,7 @@ public class Login extends AppCompatActivity {
                 startActivity(intent);
                 finish();
             } else {
-                Toast.makeText(Login.this, "Login Failed", Toast.LENGTH_SHORT).show();
+                Toast.makeText(Login.this, "Login failed!", Toast.LENGTH_SHORT).show();
             }
         });
     }
