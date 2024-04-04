@@ -49,7 +49,8 @@
                 android:drawableTint="@color/foundation_grey"
                 android:drawablePadding="8dp"
                 android:inputType="textEmailAddress"
-                android:textSize="24dp" />
+                android:textSize="24sp"
+                android:fontFamily="@font/mulish_regular" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -72,7 +73,8 @@
                 android:drawableTint="@color/foundation_grey"
                 android:drawablePadding="8dp"
                 android:inputType="textPassword"
-                android:textSize="24dp" />
+                android:textSize="24sp"
+                android:fontFamily="@font/mulish_regular" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -84,8 +86,9 @@
             android:layout_marginBottom="16dp"
             android:background="@drawable/rounded_button"
             android:text="Login"
-            android:textSize="24dp"
-            android:textColor="@color/foundation_white" />
+            android:textSize="24sp"
+            android:textColor="@color/foundation_white"
+            android:fontFamily="@font/mulish_bold" />
 
         <!--        forgot password-->
         <TextView
@@ -95,7 +98,7 @@
             android:layout_marginBottom="24dp"
             android:gravity="end"
             android:text="@string/forgot_password"
-            android:textSize="20dp"
+            android:textSize="20sp"
             android:fontFamily="@font/mulish_medium_italic"
             />
 
@@ -141,7 +144,7 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:text="@string/register"
-            android:textSize="20dp"
+            android:textSize="20sp"
             android:fontFamily="@font/mulish_medium" />
 
     </LinearLayout>

@@ -37,17 +37,19 @@
             android:inputType="textEmailAddress"
             android:textSize="24dp"
             android:padding="10dp"
-            android:textColorHint="@color/white" />
+            android:textColorHint="@color/white"
+            android:fontFamily="@font/mulish_regular"/>
 
     </com.google.android.material.textfield.TextInputLayout>
 
     <Button
         android:id="@+id/add_user_btn"
         android:layout_width="match_parent"
-        android:layout_height="56dp"
+        android:layout_height="64dp"
         android:background="@drawable/rounded_button"
         android:layout_marginBottom="16dp"
         android:text="Add User"
-        android:textSize="24dp" />
+        android:textSize="24sp"
+        android:fontFamily="@font/mulish_bold" />
 
 </LinearLayout>

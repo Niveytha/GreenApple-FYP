@@ -37,6 +37,7 @@
             android:textSize="12sp"
             android:textColor="@color/foundation_white"
             android:layout_centerVertical="true"
+            android:fontFamily="@font/mulish_medium"
             />
 
     </RelativeLayout>
@@ -81,7 +82,9 @@
             android:layout_alignParentEnd="true"
             android:textSize="12sp"
             android:textColor="@color/foundation_white"
-            android:layout_centerVertical="true" />
+            android:layout_centerVertical="true"
+            android:fontFamily="@font/mulish_medium"
+            />
 
 
     </RelativeLayout>
